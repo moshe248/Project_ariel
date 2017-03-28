@@ -55,7 +55,8 @@ public class temp1 extends JFrame {
 		setBackground(Color.WHITE);
 		setTitle("\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8 ");
 		setDefaultLookAndFeelDecorated(true);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("img\\noam.jpg"));		
+		//setIconImage(Toolkit.getDefaultToolkit().getImage("img\\noam.jpg"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("img\\mo.gif"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1100, 600);
 		contentPane = new JPanel();
