@@ -1,20 +1,20 @@
 
 public class Model {
-	Course[] courses;
-	Schedule M_scheduale;
 	final int DAYS = 6;
-	final int HOURS = 14;
+	final int HOURS = 13;
+	Course[] courses;
+	Schedule M_scheduale;	
 	Teacher[] teachers;
-	///notr
-
 
 	public  Model(Course[] courses, Teacher[] teachers) {
 		this.courses = courses;
-		for (int i = 0; i < courses.length; i++) {
-			this.courses[i].set_course_index(i);;	
-		}
 		this.teachers = teachers;
 		M_scheduale = new Schedule();
+		
+		for (int i = 0; i < courses.length; i++) 
+		{
+			this.courses[i].set_course_index(i);;	
+		}
 	}
 
 	public int model_quality(){
@@ -46,6 +46,9 @@ public class Model {
 		}
 		return true;
 	}
+	///הייתי משנה את המימוש כך השפונ' תקרא ל
+	///	build_next_model
+	///the function may not succeed
 	public boolean build_model(){
 		boolean schedual_flag;
 		for (int i = 0; i < courses.length; i++)
@@ -82,12 +85,21 @@ public class Model {
 		if(courses[ courses.length-1].Flag == true) return true;
 		else return false;
 	}
-	public int[] advance_next_course_indexes(int field,Course c){
+	public void clear_course_from_model(Course course ) {
+		teachers[ course.teacher ].clear_cours_from_teacher_schedule(course);
+		M_scheduale.clear_time(course);
+		course.first_init();		
+	}
+
+
+	///פונ' עזר עבור 
+	//find_next_model_index()
+	public int[] advance_next_course_indexes(int which_index_to_advance,Course c){
 		int day = c.Day;
 		int hour = c.Hour;
 		int teacher_ = c.teacher;
 
-		switch(field){
+		switch(which_index_to_advance){
 		case 2:
 			teacher_ ++;
 			break;
@@ -105,86 +117,106 @@ public class Model {
 	}
 	//הפונ מחפשת מהסוף להתחלה לאיזה קורס אפשר לקדם את השיבוץ,  
 	//במידה ולא ניתן לקדם הפונ תפנה את הקורס מהלוז של המרצה ותאפס את השעה יום ומרצה שהקורס רשום אליהם
-	//במידה ונצא שיבוץ שאפשר לקדם () לא בהכרח להצליח לשבץ הפונ תחזיר את האינדס של 
+	//במידה ונמצא שיבוץ שאפשר לקדם () לא בהכרח להצליח לשבץ הפונ תחזיר את האינדס של 
 	//במידה ולא ימצא שיבוץ לכל המודל בכלל הפונ תחזיר -1
-	public int[] find_next_model_index(){
+	//תוך כדי החיפוש הפונ' מנקה את הלוז והשדות הלא רלוונטים
+	public int[] find_next_model_index_and_clean_irrelevant_setting(){
 		int which_index_to_advance;
 		int ans[];
 		for (int i = courses.length-1 ; i >= 0; i--) {
-			//צריך להוסיך בדיקה להתחלי לבדוק אינקסים רק מהקורס הראשון שטרו בפלאג
-			which_index_to_advance = courses[i].find_next_indexes();
-			if( which_index_to_advance != -1)
-			{					
-				ans = advance_next_course_indexes(which_index_to_advance, courses[i]);
-				teachers[ courses[i].teacher ].clear_cours_from_schedule(courses[i]);
-				courses[i].first_init();
-				return ans;
+			if(courses[i].isFlag() )
+			{	
+				which_index_to_advance = courses[i].find_next_indexes();
+				if( which_index_to_advance != -1)
+				{					
+					ans = advance_next_course_indexes(which_index_to_advance, courses[i]);
+					clear_course_from_model(courses[i]);
+					//teachers[ courses[i].teacher ].clear_cours_from_teacher_schedule(courses[i]);
+					//courses[i].first_init();
+					return ans;
+				}
+				else
+				{
+					clear_course_from_model(courses[i]);
+					//teachers[ courses[i].teacher ].clear_cours_from_teacher_schedule(courses[i]);
+					//courses[i].first_init();				
+				}
 			}
-			else
-			{
-				teachers[ courses[i].teacher ].clear_cours_from_schedule(courses[i]);
-				courses[i].first_init();				
-			}
-
 		}
 
 		return new int[] {-1,-1,-1,-1};
 	}
+	//פונ' עזר עבור 
+	//build_next_model()
 	public boolean build_next_model(int[] next_model_indexes){
+		if(next_model_indexes[0]==-1 )return false;
 		boolean first_run = true;
 		boolean schedual_flag;
 		for (int i = 0; i < courses.length; i++)
 		{	if ( first_run ) i =next_model_indexes[0];
 		schedual_flag=false;
-		if (courses[i].isFlag() == false)///בכלל בדיקה מיותרת 
-		{//בדיקה אם הקורס לא משובץ
-			for (int d = 0; d < DAYS &&schedual_flag==false; d++)
+		//if (courses[i].isFlag() == false)///בכלל בדיקה מיותרת 
+		//{//בדיקה אם הקורס לא משובץ
+		for (int d = 0; d < DAYS &&schedual_flag==false; d++)
+		{	
+			if ( first_run ) d =next_model_indexes[1];
+			for (int h = 0; h < HOURS &&schedual_flag==false; h++)
 			{
-				if ( first_run ) d =next_model_indexes[1];
-				for (int h = 0; h < HOURS &&schedual_flag==false; h++)
-				{
-					if ( first_run ) h =next_model_indexes[2];
+				if ( first_run ) h =next_model_indexes[2];
+				if ( is_Model_schedule_available(d, h, courses[i].COURSE_LENGTH) && schedual_flag==false)
+				{// בדיקה האם פנוי במערכת הכללית של המודל
 
-					if ( is_Model_schedule_available(d, h, courses[i].COURSE_LENGTH) && schedual_flag==false)
-					{// בדיקה האם פנוי במערכת הכללית של המודל
-						for (int t = 0; t < courses[i].teachers.length && schedual_flag==false ; t++)
-						{
-							if ( first_run ) t =next_model_indexes[3];
-							first_run = false;
+					for (int t = 0; t < courses[i].teachers.length && schedual_flag==false ; t++)
+					{
+						if ( first_run ) t =next_model_indexes[3];
+						first_run = false;
 
-							if ( teachers[ courses[i].teachers[t] ].is_teacher_available(d, h, courses[i].getCOURSE_LENGTH()))
-							{// בדיקה האם פנוי במערכת של מרצה
-								schedual_course(courses[i], courses[i].teachers[t], d, h);
-								schedual_flag=true;
-								System.out.println("teacher "+t+" course "+i+" len: "+courses[i].COURSE_LENGTH );
-								//teachers[t].T_scheduale.print();
-							}
+						if ( teachers[ courses[i].teachers[t] ].is_teacher_available(d, h, courses[i].getCOURSE_LENGTH()))
+						{// בדיקה האם פנוי במערכת של מרצה
+							schedual_course(courses[i], courses[i].teachers[t], d, h);
+							schedual_flag=true;
+							System.out.println("teacher "+t+" course "+i+" len: "+courses[i].COURSE_LENGTH );
+							//teachers[t].T_scheduale.print();
 						}
 					}
 				}
 			}
 		}
+		//}
 		//אם סיימתי עם הקורס בהכרח או ששיבצתי בהצלחה או שלא קיים לקורס שיבןץ אפשרי
 		if(courses[i].Flag == false)return false;
 		}
-		M_scheduale.print();
+		//M_scheduale.print();
 		//courses[0].print();
 		return true;
 	}
 	//מהסה לבנות בלולאה עד שמצליח או שנגמרו האפשרויות
 	public boolean build_next_model(){
-		int [] indexes = new int[4];
-		indexes = find_next_model_index();
-		boolean try_to_build = false;
+		//int [] indexes = new int[4];
+		int [] indexes = new int[]{0,0,0,0};
+		//indexes = find_next_model_index();
+		boolean try_to_build;// = false;
 		//כל זמן שנכשלנו בבניית המודל אבל עדיין יש אפשרויות נוספות לבדוק
-		while( indexes[0] != -1  && try_to_build == false )
+		while( indexes[0] != -1 /* && try_to_build == false*/ )
 		{
+			indexes = find_next_model_index_and_clean_irrelevant_setting();
 			try_to_build= build_next_model(indexes);
 			if( try_to_build == true)return true;
-			else indexes = find_next_model_index(); 
+			//else indexes = find_next_model_index(); 
 		}	
 		return false;			
 	}
 
-	
+
+	public boolean  schedule_Model()
+	{
+		boolean succeed =build_model(); 
+		if(succeed) return true;
+		else
+		{
+			succeed = build_next_model();
+		}
+
+		return succeed;
+	}
 }

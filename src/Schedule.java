@@ -1,7 +1,7 @@
 
 public class Schedule {
 	final int DAYS = 6;
-	final int HOURS = 14;
+	final int HOURS = 13;
 	boolean schedule[][];
 
 	public Schedule() {
@@ -16,12 +16,12 @@ public class Schedule {
 		}
 	}
 	public void init_friday(){ //initialize Friday. Study end at 15:00 
-		for (int i = 6; i < HOURS; i++) { 
+		for (int i = 7; i < HOURS; i++) { 
 			schedule[5][i] = true;
 		}
 	}
 	public boolean is_available(int day, int hour, int course_length){
-		if (hour + course_length >= HOURS) return false;
+		if (hour + course_length > HOURS) return false;
 		for (int i = 0; i < course_length; i++) {
 			if (schedule[day][hour + i] == true)
 				return false;

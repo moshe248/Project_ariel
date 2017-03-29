@@ -1,7 +1,7 @@
 
 public class Course {
 	final int DAYS = 6;
-	final int HOURS = 14;
+	final int HOURS = 13;
 	int ID;
 	final int COURSE_LENGTH;
 	int[] teachers;

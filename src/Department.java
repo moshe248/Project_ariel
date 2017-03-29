@@ -10,12 +10,20 @@ public class Department {
 		this.teachers = teachers;
 	}
 
-	public void run_app(){
+	/*public void run_app(){
 		
 		for (int i = 0; i < models.length; i++) {
 			models[i].build_model();
 		}
+	}*/
+	public void run_app(){
+	boolean possibole = true;;
+	for (int i = 0; i < models.length && possibole == true; i++) {
+		possibole= models[i].schedule_Model();
 	}
+	if(possibole == true) System.out.println( "concradulation ");
+	else System.out.println(" you faild");
+}
 
 
 	public static void main(String[] args) {

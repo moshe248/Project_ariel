@@ -1,13 +1,14 @@
 
 public class Teacher {
 	final int DAYS = 6;
-	final int HOURS = 14;//לדעתי צריך להיות 13 ועבור יום שישי תהיה פונ שתזיז בשעה
+	final int HOURS = 13;//לדעתי צריך להיות 13 ועבור יום שישי תהיה פונ שתזיז בשעה
 	int ID;
 	Schedule T_scheduale;
 	final int TEKEN;
 	//int[] T_courses;
 	int actual_time;
 	int teken_exception;
+	///need to add teacher index' will be initiated in department;
 	
 	boolean is_available;
 	
@@ -55,7 +56,7 @@ public class Teacher {
 	public void clear_cours_from_schedule(int day, int hour, int course_length){
 		T_scheduale.clear_time(day, hour, course_length);
 	}
-	public void clear_cours_from_schedule(Course course){
+	public void clear_cours_from_teacher_schedule(Course course){
 		T_scheduale.clear_time(course);
 	}
 	/*public static void main(String[] args) {
