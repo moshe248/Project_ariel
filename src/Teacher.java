@@ -3,6 +3,8 @@ public class Teacher {
 	final int DAYS = 6;
 	final int HOURS = 13;//לדעתי צריך להיות 13 ועבור יום שישי תהיה פונ שתזיז בשעה
 	int ID;
+	String Teacher_name="";
+	
 	Schedule T_scheduale;
 	final int TEKEN;
 	//int[] T_courses;
@@ -12,7 +14,8 @@ public class Teacher {
 	
 	boolean is_available;
 	
-	public Teacher(int iD, int teken, /*int[] t_courses,*/ int exception, int forbididen_hours[][]) {
+	public Teacher(String name,int iD, int teken, /*int[] t_courses,*/ int exception, int forbididen_hours[][]) {
+		Teacher_name = name;
 		ID = iD;
 		actual_time = 0;
 		T_scheduale = new Schedule();
@@ -63,5 +66,10 @@ public class Teacher {
 		// TODO Auto-generated method stub
 
 	}*/
+	public void print_teacher() {
+		System.out.println(Teacher_name+":" );
+		T_scheduale.print();
+		
+	}
 
 }

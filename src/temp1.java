@@ -67,18 +67,31 @@ public class temp1 extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(100, 100, 1100, 600);
 		ImageIcon con= new ImageIcon("img\\ariel_low_.jpg");
 		lblNewLabel.setIcon(con);
 		//lblNewLabel.setIcon(new ImageIcon("C:\\Users\\moshe\\\u05E1\u05DE\u05E1\u05D8\u05E8 \u05D0\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\logo\\logo_low1.png"));
 		contentPane.add(lblNewLabel, BorderLayout.SOUTH);
-		
-		String[] table_title={"moshe","moria","maly"};
-		String p[][]= {{"a","b","c"},
+		String[] week= {"Sunday", "Monday","Tuesday","Wednesday","Thursday","Friday"};
+		//String[] table_title={"moshe","moria","maly"};
+		StringBuffer sb = new StringBuffer("hh"); 
+		sb.append(System.getProperty("line.separator"));
+		sb.append("kk");
+
+		//String aaa= "course" +"\r\n"+"techer";
+		StringBuffer p[][]= new StringBuffer [13][6];
+		for (int i = 0; i < p.length; i++) {
+			for (int j = 0; j < p[0].length; j++) {
+				p[i][j]=sb;
+			}
+			
+		}
+				/*{{"a","b","c"},
 					{"aa","bb","cc"},
 					{"aaa","bbb","ccc"},
 					{"aaaa","bbbb","cccc"}
-		};
-		table = new JTable(p,table_title);
+		};*/
+		table = new JTable(p,week);
 		//table.setPreferredScrollableViewportSize(new Dimension(200,400));
 		//table.setFillsViewportHeight(true);
 		
@@ -100,6 +113,7 @@ public class temp1 extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				lblNewLabel.setVisible(false);
 				table.setVisible(true);
 				System.out.println("hi moshe");
 			}

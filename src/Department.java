@@ -16,6 +16,8 @@ public class Department {
 			models[i].build_model();
 		}
 	}*/
+	
+	//צריך לעטוף בתנאי שאם לא מצליח קליר מודל ושבת נקסט וכו
 	public void run_app(){
 	boolean possibole = true;;
 	for (int i = 0; i < models.length && possibole == true; i++) {
@@ -45,9 +47,9 @@ public class Department {
 	Course OS = new Course(4, 3, new int[]{2,0});
 	Course Infy = new Course(5, 5, new int[]{1,3});
 
-	Course [] C = {Bdida, Logic, DB, OS, Infy};*/
+	Course [] C = {Bdida, Logic, DB, OS, Infy};
 		
-	/*	int k=0;
+		int k=0;
 		while(k<89){
 			for (int i = 9; i < 22; i++) {
 				forbididen_hours1[k][1]= i;
@@ -90,23 +92,45 @@ public class Department {
 		int[][] forbididen_hours1 = {{1,9}};
 		int[][] forbididen_hours2 = {{1,9}};
 
-		Teacher Aviv = new Teacher(1, 4, 1, forbididen_hours1);
-		Teacher Yona= new Teacher(2, 6, 2, forbididen_hours2);
+		Teacher Aviv = new Teacher("Aviv",1, 4, 1, forbididen_hours1);
+		Teacher Yona= new Teacher("Yona",2, 6, 2, forbididen_hours2);
 		Aviv.T_scheduale.fullSched();
 		Aviv.T_scheduale.schedule[0][0]=false;
-		Aviv.T_scheduale.print();
+		//Aviv.T_scheduale.print();
 		Yona.T_scheduale.fullSched();
-		Yona.T_scheduale.schedule[0][0]=false;
-		Teacher[] T = {Yona,Aviv};
+		//Yona.T_scheduale.schedule[0][0]=false;
+		Yona.T_scheduale.schedule[3][5]=false;
+		Teacher[] T = {Aviv,Yona};
 
-		Course Bdida = new Course(1, 1, new int[]{0,1});
-		Course Logic = new Course(2, 1, new int[]{0});
+		Course Bdida = new Course(/*1,*/"Bdida", 1, new int[]{0,1});
+		Course Logic = new Course(/*2,*/"Logic", 1, new int[]{0});
 		
 		Course [] C = {Bdida, Logic};
 		Model M = new Model (C,T);
 		Model[] models = {M};
 		Department CS = new Department(models, T);
+		
+		
+		
+		
 		CS.run_app();
+		M.print_model();
+		System.out.println("teachers:");
+		for (int i = 0; i < T.length; i++) {
+			T[i].print_teacher();
+		}
+		/*System.out.println("model:");
+		M.M_scheduale.print();
+		System.out.println();
+		System.out.println("yona:");
+		Yona.T_scheduale.print();
+		System.out.println();
+		System.out.println("Aviv:");
+		Aviv.T_scheduale.print();
+		System.out.println("bdida");
+		Bdida.print();
+		System.out.println("logic");
+		Logic.print();*/
 		/*for (int i = 0; i < T.length; i++) {
 		T[i].T_scheduale.print();
 	}*/

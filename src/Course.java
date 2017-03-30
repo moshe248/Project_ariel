@@ -2,18 +2,21 @@
 public class Course {
 	final int DAYS = 6;
 	final int HOURS = 13;
-	int ID;
+	//int ID;
 	final int COURSE_LENGTH;
 	int[] teachers;
 	int course_index;
 	//final int model
+	String course_name="";;
+	
 	boolean Flag; ///is scheduled
 	int Day;
 	int Hour;
 	int teacher;
 
-	public Course(int course_num, int course_length, int[] teachers){
-		ID = course_num;
+	public Course(/*int course_num,*/	String name, int course_length, int[] teachers){
+		//ID = course_num;
+		course_name = name;
 		COURSE_LENGTH = course_length;
 		this.teachers = teachers;
 		first_init();
@@ -28,10 +31,10 @@ public class Course {
 		Flag = true;
 	}
 	public void print(){
-		System.out.println("Course ID: "+ ID);
-		System.out.println("Teacher ID: "+ teacher);
+		//System.out.println("Course ID: "+ ID);
+		/*System.out.println("Teacher index: "+ teacher);
 		System.out.println("Day-"+Day);
-		System.out.println("Hour-"+Hour);
+		System.out.println("Hour-"+Hour);*/
 	}
 	public void first_init(){
 		Flag = false;

@@ -2,9 +2,13 @@
 public class Model {
 	final int DAYS = 6;
 	final int HOURS = 13;
+	final String[] week= {"Sunday", "Monday","Tuesday","Wednesday","Thursday","Friday"};
 	Course[] courses;
 	Schedule M_scheduale;	
 	Teacher[] teachers;
+	
+	
+	
 
 	public  Model(Course[] courses, Teacher[] teachers) {
 		this.courses = courses;
@@ -143,7 +147,6 @@ public class Model {
 				}
 			}
 		}
-
 		return new int[] {-1,-1,-1,-1};
 	}
 	//פונ' עזר עבור 
@@ -175,7 +178,7 @@ public class Model {
 						{// בדיקה האם פנוי במערכת של מרצה
 							schedual_course(courses[i], courses[i].teachers[t], d, h);
 							schedual_flag=true;
-							System.out.println("teacher "+t+" course "+i+" len: "+courses[i].COURSE_LENGTH );
+							//System.out.println("teacher "+t+" course "+i+" len: "+courses[i].COURSE_LENGTH );
 							//teachers[t].T_scheduale.print();
 						}
 					}
@@ -218,5 +221,21 @@ public class Model {
 		}
 
 		return succeed;
+	}
+	public void print_course(Course course){
+		int hour =course.Hour+9;
+		System.out.print( course.course_name+" "+ week[course.Day]+" "+hour+":00 "  );
+	}
+	public void print_model() {
+		
+		System.out.println("Model Schedule:");
+		M_scheduale.print();
+		System.out.println("courses:");
+		for (int i = 0; i < courses.length; i++) {
+			print_course( courses[i]);
+			System.out.print( teachers[courses[i].teacher].Teacher_name);
+			System.out.println();
+		}
+		
 	}
 }
