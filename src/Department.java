@@ -18,7 +18,7 @@ public class Department {
 	}*/
 	
 	//צריך לעטוף בתנאי שאם לא מצליח קליר מודל ושבת נקסט וכו
-	public void run_app(){
+	public void build_department(){
 	boolean possibole = true;;
 	for (int i = 0; i < models.length && possibole == true; i++) {
 		possibole= models[i].schedule_Model();
@@ -26,7 +26,47 @@ public class Department {
 	if(possibole == true) System.out.println( "concradulation ");
 	else System.out.println(" you faild");
 }
-
+	public void build_department2(){
+		boolean build_model = true;;
+		int i = 0;
+		while ( i > -1 && i < models.length   )		
+		{
+			build_model = models[i].schedule_Model();
+			if( build_model == true) i++;
+			else 
+			{	if( i == 0 )i--;	
+				while(i > -1 && build_model == false )//erase backward
+				{	
+					models[i].clear_model();
+					i--;
+					build_model = models[i].build_next_model();
+				}
+				if( build_model == true) i++;
+				
+			}
+		}
+			if( i == -1 )System.out.println("you did not succeed ");
+			if( i == models.length  ){
+				System.out.println("you succeed! concradulation! ");
+				System.out.println("*******************************************************************************************");
+				for (int j = 0; j < models.length; j++) {
+					models[j].print_model();
+				}
+			}
+	}	
+	
+	
+	/*public boolean build_next_department(int index_of_model_failed){
+		//not suposed to happend
+		if(index_of_model_failed == 0 )return false;
+		else
+		{
+			models[ index_of_model_failed ].clear_model();
+			
+		}
+		
+		
+	}*/
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -98,8 +138,8 @@ public class Department {
 		Aviv.T_scheduale.schedule[0][0]=false;
 		//Aviv.T_scheduale.print();
 		Yona.T_scheduale.fullSched();
-		//Yona.T_scheduale.schedule[0][0]=false;
-		Yona.T_scheduale.schedule[3][5]=false;
+		Yona.T_scheduale.schedule[0][0]=false;
+		//Yona.T_scheduale.schedule[3][5]=false;
 		Teacher[] T = {Aviv,Yona};
 
 		Course Bdida = new Course(/*1,*/"Bdida", 1, new int[]{0,1});
@@ -113,12 +153,14 @@ public class Department {
 		
 		
 		
-		CS.run_app();
-		M.print_model();
+		//CS.build_department();
+		CS.build_department2();
+
+		/*M.print_model();
 		System.out.println("teachers:");
 		for (int i = 0; i < T.length; i++) {
 			T[i].print_teacher();
-		}
+		}*/
 		/*System.out.println("model:");
 		M.M_scheduale.print();
 		System.out.println();

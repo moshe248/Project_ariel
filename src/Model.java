@@ -1,4 +1,4 @@
-
+//הערה כללית לשנות את פונ העזר לפריייווט 
 public class Model {
 	final int DAYS = 6;
 	final int HOURS = 13;
@@ -6,21 +6,21 @@ public class Model {
 	Course[] courses;
 	Schedule M_scheduale;	
 	Teacher[] teachers;
-	
-	
-	
+	boolean is_schedule =false;
+
+
 
 	public  Model(Course[] courses, Teacher[] teachers) {
 		this.courses = courses;
 		this.teachers = teachers;
 		M_scheduale = new Schedule();
-		
+
 		for (int i = 0; i < courses.length; i++) 
 		{
 			this.courses[i].set_course_index(i);;	
 		}
 	}
-
+	
 	public int model_quality(){
 		//הפונקציה תבדוק את טיב המערכת מבחינת שעות עבור סטודנט אחד ותחזיר מספר
 		// עבור טווח מספרים מסויים המודל אוטומטית יימחק (למשל שיבוץ של מערכת על פני 6 ימים בשבוע)
@@ -84,18 +84,21 @@ public class Model {
 
 		}
 		//פה צריך לשלוח לבניית מודל החל מאינדקס
-		M_scheduale.print();
+		//M_scheduale.print();
 		//courses[0].print();
-		if(courses[ courses.length-1].Flag == true) return true;
+		if(courses[ courses.length-1].Flag == true) {
+			is_schedule =true;
+			return true;
+		}
 		else return false;
 	}
 	public void clear_course_from_model(Course course ) {
+		if(course.Flag ){
 		teachers[ course.teacher ].clear_cours_from_teacher_schedule(course);
 		M_scheduale.clear_time(course);
-		course.first_init();		
+		course.first_init();
+		}
 	}
-
-
 	///פונ' עזר עבור 
 	//find_next_model_index()
 	public int[] advance_next_course_indexes(int which_index_to_advance,Course c){
@@ -195,6 +198,8 @@ public class Model {
 	}
 	//מהסה לבנות בלולאה עד שמצליח או שנגמרו האפשרויות
 	public boolean build_next_model(){
+		is_schedule = false;
+
 		//int [] indexes = new int[4];
 		int [] indexes = new int[]{0,0,0,0};
 		//indexes = find_next_model_index();
@@ -202,15 +207,18 @@ public class Model {
 		//כל זמן שנכשלנו בבניית המודל אבל עדיין יש אפשרויות נוספות לבדוק
 		while( indexes[0] != -1 /* && try_to_build == false*/ )
 		{
+
 			indexes = find_next_model_index_and_clean_irrelevant_setting();
 			try_to_build= build_next_model(indexes);
-			if( try_to_build == true)return true;
+			if( try_to_build == true)
+			{
+				is_schedule = true;
+				return true;
+			}
 			//else indexes = find_next_model_index(); 
 		}	
 		return false;			
 	}
-
-
 	public boolean  schedule_Model()
 	{
 		boolean succeed =build_model(); 
@@ -219,15 +227,20 @@ public class Model {
 		{
 			succeed = build_next_model();
 		}
-
 		return succeed;
+	}
+	public void clear_model(){
+		for (int i = 0; i < courses.length; i++) 
+		{
+			clear_course_from_model(courses[i]);
+		}
 	}
 	public void print_course(Course course){
 		int hour =course.Hour+9;
 		System.out.print( course.course_name+" "+ week[course.Day]+" "+hour+":00 "  );
 	}
 	public void print_model() {
-		
+
 		System.out.println("Model Schedule:");
 		M_scheduale.print();
 		System.out.println("courses:");
@@ -236,6 +249,6 @@ public class Model {
 			System.out.print( teachers[courses[i].teacher].Teacher_name);
 			System.out.println();
 		}
-		
+
 	}
 }
