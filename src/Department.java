@@ -1,4 +1,6 @@
-
+//// צריך להוסיף פונ שמחשבת נומינלית כמה אפשרויות תאוריטית יש 
+//צריך להוסיף פונ שבודקת כמה אפשריות בתכלס חישבתנו ועל כמה דילגנו כי לא היה צריך לחשב
+// צריך לבדוק כל פונ בכל מחלקה ולכתוב מה מותר להחזיר ומה אסור כנ"ל לגבי לקבל והדפסת שגיאה על הפונ במידה וקיבלנו ערך אסור
 public class Department {
 	Model[] models;
 	Teacher[] teachers;
@@ -11,61 +13,123 @@ public class Department {
 	}
 
 	/*public void run_app(){
-		
+
 		for (int i = 0; i < models.length; i++) {
 			models[i].build_model();
 		}
 	}*/
-	
+
 	//צריך לעטוף בתנאי שאם לא מצליח קליר מודל ושבת נקסט וכו
 	public void build_department(){
-	boolean possibole = true;;
-	for (int i = 0; i < models.length && possibole == true; i++) {
-		possibole= models[i].schedule_Model();
+		boolean possibole = true;;
+		for (int i = 0; i < models.length && possibole == true; i++) {
+			possibole= models[i].schedule_Model();
+		}
+		if(possibole == true) System.out.println( "concradulation ");
+		else System.out.println(" you faild");
 	}
-	if(possibole == true) System.out.println( "concradulation ");
-	else System.out.println(" you faild");
-}
-	public void build_department2(){
-		boolean build_model = true;;
-		int i = 0;
+	public boolean build_department2(){
+		return build_department3(0);
+	}	
+	public boolean build_department3(int empty_model_index){
+		boolean build_model ;
+		int i = empty_model_index;
 		while ( i > -1 && i < models.length   )		
 		{
 			build_model = models[i].schedule_Model();
 			if( build_model == true) i++;
 			else 
-			{	if( i == 0 )i--;	
+			{
+			//	if( i == 0 )i--;// it means that it is not possible to advance and sched even the first model	
 				while(i > -1 && build_model == false )//erase backward
 				{	
 					models[i].clear_model();
 					i--;
-					build_model = models[i].build_next_model();
+					if( i > -1 )build_model = models[i].build_next_model();
 				}
-				if( build_model == true) i++;
-				
+				if( build_model == true) i++;				
 			}
 		}
-			if( i == -1 )System.out.println("you did not succeed ");
-			if( i == models.length  ){
-				System.out.println("you succeed! concradulation! ");
-				System.out.println("*******************************************************************************************");
-				for (int j = 0; j < models.length; j++) {
-					models[j].print_model();
-				}
+		if( i == -1 )
+		{
+			System.out.println("you did not succeed building all models ");
+			return false;
+		}
+		if( i == models.length  ){
+			System.out.println("you succeed building all models! concradulation! ");
+			System.out.println("*******************************************************************************************");
+			for (int j = 0; j < models.length; j++) {
+				models[j].print_model();
 			}
+		}
+		return true;
 	}	
+	public boolean build_next_department2(/*void*/ ){
+		boolean build_model =false;
+		int i = find_last_build_model();
+		//if i = -1 ? can i=-1?
+
+		while ( i > -1 && i < models.length && build_model == false   )		
+		{
+			build_model = models[i].build_next_model();
+
+			if(build_model == false )
+			{
+				models[i].clear_model();
+				i--;				
+			}			
+			else  i++;			
+		}
+		if( build_model == true ) return build_department3(i);
+		else System.out.println( "no more option");	
+		return false;
+		/*
+		boolean build_model =false;
+		int i = models.length-1;	
+
+		while ( i > -1 && i < models.length && build_model == false   )		
+		{
+			build_model = models[i].build_next_model();
+
+			if(build_model == false )
+			{
+				models[i].clear_model();
+				i--;				
+			}			
+			else  i++;			
+		}
+		if( build_model == true ) return build_department3(i);
+		else System.out.println( "no more option");	
+		return false;*/
+	}	
+	public int find_last_build_model(){
+		int i; 	
+		for ( i =  models.length-1; i> -1 ; i--) {
+			if(models[i].is_schedule) break;
+		}
+		return i;
+	}
+	public void build_all_departments(){
+		int answars=0;
+		boolean next = build_department2();
+		while( next == true && answars < 500)
+		{
+		answars++;
+		next= build_next_department2();	
+		}
 	
-	
+		System.out.println(" i have found "+ answars + " possibole answars");
+	}
 	/*public boolean build_next_department(int index_of_model_failed){
 		//not suposed to happend
 		if(index_of_model_failed == 0 )return false;
 		else
 		{
 			models[ index_of_model_failed ].clear_model();
-			
+
 		}
-		
-		
+
+
 	}*/
 
 	public static void main(String[] args) {
@@ -88,7 +152,7 @@ public class Department {
 	Course Infy = new Course(5, 5, new int[]{1,3});
 
 	Course [] C = {Bdida, Logic, DB, OS, Infy};
-		
+
 		int k=0;
 		while(k<89){
 			for (int i = 9; i < 22; i++) {
@@ -127,7 +191,7 @@ public class Department {
 			k++;	
 		}
 
-*/
+		 */
 
 		int[][] forbididen_hours1 = {{1,9}};
 		int[][] forbididen_hours2 = {{1,9}};
@@ -135,26 +199,28 @@ public class Department {
 		Teacher Aviv = new Teacher("Aviv",1, 4, 1, forbididen_hours1);
 		Teacher Yona= new Teacher("Yona",2, 6, 2, forbididen_hours2);
 		Aviv.T_scheduale.fullSched();
-		Aviv.T_scheduale.schedule[0][0]=false;
+		Aviv.T_scheduale.schedule[1][5]=false;
+		Aviv.T_scheduale.schedule[0][2]=false;
 		//Aviv.T_scheduale.print();
 		Yona.T_scheduale.fullSched();
 		Yona.T_scheduale.schedule[0][0]=false;
-		//Yona.T_scheduale.schedule[3][5]=false;
+		Yona.T_scheduale.schedule[3][5]=false;
 		Teacher[] T = {Aviv,Yona};
 
 		Course Bdida = new Course(/*1,*/"Bdida", 1, new int[]{0,1});
 		Course Logic = new Course(/*2,*/"Logic", 1, new int[]{0});
-		
+
 		Course [] C = {Bdida, Logic};
 		Model M = new Model (C,T);
 		Model[] models = {M};
 		Department CS = new Department(models, T);
-		
-		
-		
-		
+
+
+
+
 		//CS.build_department();
-		CS.build_department2();
+		//CS.build_department2();
+		CS.build_all_departments();
 
 		/*M.print_model();
 		System.out.println("teachers:");

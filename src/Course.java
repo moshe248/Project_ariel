@@ -9,7 +9,7 @@ public class Course {
 	//final int model
 	String course_name="";;
 	
-	boolean Flag; ///is scheduled
+	boolean _is_set; ///is scheduled
 	int Day;
 	int Hour;
 	int teacher;
@@ -28,7 +28,7 @@ public class Course {
 		this.Day = day;
 		this.Hour = hour;
 		this.teacher = teacher;
-		Flag = true;
+		_is_set = true;
 	}
 	public void print(){
 		//System.out.println("Course ID: "+ ID);
@@ -37,14 +37,14 @@ public class Course {
 		System.out.println("Hour-"+Hour);*/
 	}
 	public void first_init(){
-		Flag = false;
+		_is_set = false;
 		Day = -1;
 		Hour = -1;
 		teacher = -1;
 		
 	}
 	public boolean isFlag() {
-		return Flag;
+		return _is_set;
 	}
 	
 	//הפונ מחזירה איזה אינדקס של הקורס ניתן לשנה 
